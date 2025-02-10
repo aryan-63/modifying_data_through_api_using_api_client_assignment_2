@@ -1,15 +1,17 @@
+require('dotenv').config(); // This loads the .env file
+
 const express = require('express');
-const { resolve } = require('path');
-
+const mongoose = require('mongoose');
 const app = express();
-const port = 3010;
+const port = 3000;
 
-app.use(express.static('static'));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.sendFile(resolve(__dirname, 'pages/index.html'));
-});
+// MongoDB Atlas Connection
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+   .then(() => console.log('MongoDB connected'))
+   .catch((err) => console.log('Failed to connect to MongoDB:', err));
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+   console.log(`Server is running on port ${port}`);
 });
